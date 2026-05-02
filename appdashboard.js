@@ -545,6 +545,8 @@ export class AppDashboard extends App{
         ServerEventBus.post(request);
     }
     showCloseButton(){
+        // On macOS, native traffic light buttons handle close/minimize
+        if(window.api && window.api.platform === 'darwin') return false;
         return true;
     }
     redirectToHttpsIfNeeded(){}

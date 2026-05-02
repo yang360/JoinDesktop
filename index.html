@@ -37,6 +37,9 @@
 	<script src="./v2/dexie.js"></script>
 	<script src="./v2/api/fcmLegacyToV1Converter.js"></script>
     <script type="module">	
+		 if(window.api && window.api.platform === 'darwin'){
+			 document.body.classList.add('platform-darwin');
+		 }
 		 import { AppDashboard } from './appdashboard.js';
 		 const app = new AppDashboard(document.querySelector("body")).load();	
 	</script>

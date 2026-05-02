@@ -1,6 +1,6 @@
-import { Util } from '../v2/util.js';
-import { UtilServer } from './serverutil.js';
-import { EventBus } from '../v2/eventbus.js';
+const { Util } = require('../v2/util.js');
+const { UtilServer } = require('./serverutil.js');
+const { EventBus } = require('../v2/eventbus.js');
 const path = require('path')
 const { nativeImage , Notification, BrowserWindow, screen  } = require('electron')
 const notifier = require('node-notifier');
@@ -352,7 +352,7 @@ class StoredNotifications{
 }
 class ExistingNotifications{}
 class NoNotifications{}
-export class ServerNotification{
+class ServerNotification{
     // constructor(args){
     //     Object.assign(this,args);
     //     if(!this.title){
@@ -505,3 +505,4 @@ if(debugging){
     ServerNotification.show({title:"Join Companion App",body:"Now running!", timeout: 999999999999});
     ServerNotification.show({title:"Join Companion App 2",body:"Now running 2!"});
 }
+exports.ServerNotification = ServerNotification;

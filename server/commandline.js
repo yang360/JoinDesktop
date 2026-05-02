@@ -1,7 +1,7 @@
 
 const child_process = require('child_process');
 
-export class CommandLine{
+class CommandLine{
     /**
      * 
      * @param {String} command 
@@ -30,3 +30,4 @@ export class CommandLine{
         });
     }
 }
+exports.CommandLine = CommandLine;

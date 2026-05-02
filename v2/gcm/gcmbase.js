@@ -373,6 +373,14 @@ class GCMMediaInfoBase{
 		return push;
 	}
 }
+// Make classes available as globals for Node.js (matches browser behavior
+// where these are globals via <script> tags)
+try{
+	globalThis.GCMBase = GCMBase;
+	globalThis.GCMMediaInfoBase = GCMMediaInfoBase;
+	globalThis.GCMNotificationBase = GCMNotificationBase;
+	globalThis.GCMPushBase = GCMPushBase;
+}catch{}
 try{
 	exports.GCMBase = GCMBase;
 	exports.GCMMediaInfoBase = GCMMediaInfoBase;

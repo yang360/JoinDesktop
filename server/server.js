@@ -1,5 +1,5 @@
 const http = require('http');
-import {createHttpTerminator} from 'http-terminator';
+const {createHttpTerminator} = require('http-terminator');
 var url = require('url');
 const {GCMServer} = require("./gcmserver.js");
 const {ClipboardChecker} = require("./clipboardchecker.js");
@@ -7,14 +7,14 @@ const { globalShortcut,ipcMain ,app,nativeImage,BrowserWindow,Tray,Menu, MenuIte
 const {GoogleAuth} = require('./googleauth.js');
 const {ServerNotification} = require('./servernotification.js');
 const {EventBus} = require("../v2/eventbus.js")
-import { DevicesServer } from "./serverdevices.js";
-import { AppContext } from "../v2/appcontext.js";
-import { SettingCompanionAppPortToReceive, SettingHideTextInNotifications } from '../v2/settings/setting.js';
-import { Util } from '../v2/util.js';
-import { ServerKeyboardShortcuts } from './serverkeyboardshortcut.js';
-import { AutoUpdater } from './autoupdater.js';
-import { UtilServer } from './serverutil.js';
-import { CommandLine } from './commandline.js';
+const { DevicesServer } = require("./serverdevices.js");
+const { AppContext } = require("../v2/appcontext.js");
+const { SettingCompanionAppPortToReceive, SettingHideTextInNotifications } = require('../v2/settings/setting.js');
+const { Util } = require('../v2/util.js');
+const { ServerKeyboardShortcuts } = require('./serverkeyboardshortcut.js');
+const { AutoUpdater } = require('./autoupdater.js');
+const { UtilServer } = require('./serverutil.js');
+const { CommandLine } = require('./commandline.js');
 
 const path = require('path')
 const Store = require('./store.js');
@@ -91,8 +91,11 @@ class Server{
         //     console.log("resetting bounds");
         //     bounds = {x:500,y:500,width:750,height:800};
         // }
+        const isMac = process.platform === 'darwin';
         const args = {
-            frame: false, 
+            frame: isMac ? true : false,
+            titleBarStyle: isMac ? 'hiddenInset' : undefined,
+            trafficLightPosition: isMac ? { x: 12, y: 12 } : undefined,
             icon: appIcon,   
             webPreferences: {
               contextIsolation: true,

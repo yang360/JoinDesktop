@@ -1,5 +1,5 @@
-import { EventBus } from '../v2/eventbus.js';
-import { UtilServer } from './serverutil.js';
+const { EventBus } = require('../v2/eventbus.js');
+const { UtilServer } = require('./serverutil.js');
 
 const os = require('os');
 class UpdateAvailable{
@@ -7,7 +7,7 @@ class UpdateAvailable{
         Object.assign(this,args);
     }
 }
-export class AutoUpdater{
+class AutoUpdater{
     constructor(app){
         this.app = app;
         EventBus.register(this);
@@ -17,6 +17,12 @@ export class AutoUpdater{
     }
     get isMacSystem(){
         return os.platform() == "darwin";
+    }
+    get isAppleSilicon(){
+        return this.isMacSystem && os.arch() == "arm64";
+    }
+    get cpuArch(){
+        return os.arch();
     }
     get updateFileExtension(){
         if(this.isWindowsSystem){
@@ -35,6 +41,8 @@ export class AutoUpdater{
         response.isWindowsSystem = this.isWindowsSystem;
         response.isMacSystem = this.isMacSystem;
         response.isLinuxSystem = !this.isWindowsSystem && !this.isMacSystem;
+        response.isAppleSilicon = this.isAppleSilicon;
+        response.cpuArch = this.cpuArch;
         response.ipAddress = UtilServer.myIp;
         return response;
     }
@@ -69,7 +77,8 @@ export class AutoUpdater{
 
                 let downloadLinkEnd = `Join.Desktop.Setup.${versionFromGithub}.exe`;
                 if(appInfo.isMacSystem){
-                    downloadLinkEnd = `Join.Desktop-${versionFromGithub}.dmg`;
+                    const archSuffix = appInfo.isAppleSilicon ? "-arm64" : "";
+                    downloadLinkEnd = `Join.Desktop-${versionFromGithub}${archSuffix}.dmg`;
                 }
                 if(appInfo.isLinuxSystem){
                     downloadLinkEnd = `Join.Desktop-${versionFromGithub}.AppImage`;
@@ -100,3 +109,4 @@ export class AutoUpdater{
     }
 
 }
+exports.AutoUpdater = AutoUpdater;

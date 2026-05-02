@@ -1,5 +1,5 @@
-import { KeyboardShortcut } from '../v2/keyboard/keyboardshortcut.js';
-import { EventBus } from '../v2/eventbus.js';
+const { KeyboardShortcut } = require('../v2/keyboard/keyboardshortcut.js');
+const { EventBus } = require('../v2/eventbus.js');
 
 const { globalShortcut } = require('electron')
 const Store = require('./store.js');
@@ -8,7 +8,7 @@ const store = new Store({
     defaults: []
 });
 
-export class ServerKeyboardShortcuts{
+class ServerKeyboardShortcuts{
     static async storeShortcuts(shortcuts){
         await ServerKeyboardShortcuts.clearShortcuts();
         for(const shortcut of shortcuts){
@@ -75,3 +75,4 @@ class ShortcutPressed{
         this.shortcut = shortcut;
     }
 }
+exports.ServerKeyboardShortcuts = ServerKeyboardShortcuts;

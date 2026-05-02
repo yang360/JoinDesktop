@@ -54,6 +54,9 @@
 	align-items: center;
 	flex-grow: 1;
 }
+.platform-darwin #headerleft{
+	padding-left: 70px;
+}
 #headerleft>*{    
     -webkit-app-region: no-drag;
 }

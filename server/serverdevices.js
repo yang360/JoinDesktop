@@ -1,4 +1,4 @@
-import { Devices } from '../v2/device/device.js';
+const { Devices } = require('../v2/device/device.js');
 
 const Store = require('./store.js');
 const devicesStore = new Store({
@@ -6,7 +6,7 @@ const devicesStore = new Store({
     defaults: []
 });
 
-export class DevicesServer{
+class DevicesServer{
     /** @type {Devices} */
     static get devices(){
         const raw = devicesStore.getData();
@@ -24,3 +24,4 @@ export class DevicesServer{
         return device;
     }
 }
+exports.DevicesServer = DevicesServer;

@@ -1,10 +1,10 @@
 const {GCMBase,GCMMediaInfoBase} = require("../v2/gcm/gcmbase.js");
 const {Util} = require("../v2/util.js")
 const {GoogleDrive} = require("../v2/google/drive/googledrive.js")
-import {EventBus} from "../v2/eventbus.js"
-import { Devices } from "../v2/device/device.js";
-import { DevicesServer } from "./serverdevices.js";
-import { GCMNotificationBase } from "../v2/gcm/gcmbase.js";
+const {EventBus} = require("../v2/eventbus.js")
+const { Devices } = require("../v2/device/device.js");
+const { DevicesServer } = require("./serverdevices.js");
+const { GCMNotificationBase } = require("../v2/gcm/gcmbase.js");
 GCMBase.getGCMFromType = type => eval(`new ${type}()`);
 const {clipboard,shell} = require('electron')
 class RequestSendPush{
@@ -29,7 +29,7 @@ class RequestHandleNotificationClickGCMOnPage{
         this.action = action;
     }
 }
-export class GCMServer extends GCMBase{
+class GCMServer extends GCMBase{
     static async getGCMFromJson(type,json){
         return await GCMBase.getGCMFromJson(type,json);
     }
@@ -213,5 +213,7 @@ class GCMAutoClipboard extends GCMServer{}
 class GCMNotificationAction extends GCMServer{}
 class GCMNotificationClear extends GCMServer{}
 class GCMNewSmsReceived extends GCMServer{}
-export class GCMLocalNetworkRequest extends GCMServer{}
+class GCMLocalNetworkRequest extends GCMServer{}
 class GCMSmsSentResult extends GCMServer{}
+exports.GCMServer = GCMServer;
+exports.GCMLocalNetworkRequest = GCMLocalNetworkRequest;

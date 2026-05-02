@@ -8,8 +8,17 @@ export class AppContext{
     }
 }
 const localStorageCache = {};
+let _nodeRequire = null;
+    try { _nodeRequire = require; } catch {}
+if (!_nodeRequire && typeof process !== 'undefined' && process.versions && process.versions.node) {
+    // Node.js ESM context: require() isn't a global, build one from module.createRequire
+    try {
+        const m = process.getBuiltinModule('module');
+        _nodeRequire = m.createRequire(import.meta.url);
+    } catch {}
+}
 const getServerStore = () => {
-    const Store = require(AppContext.context.serverStorePath);
+    const Store = _nodeRequire(AppContext.context.serverStorePath);
     return new Store({
         configName: 'localStorage',
         defaults: {}
@@ -56,17 +65,21 @@ class LocalStorage{
         if(localStorageCache.hasOwnProperty(key)) return localStorageCache[key];
 
         try{
-            const value = localStorage.getItem(key);
+            let value = localStorage.getItem(key);
             if(value == "null"){
                 value = null;
             }
             return value;
         }catch(error){
             try{
+                if(!AppContext.context.serverStorePath){
+                    console.log("Can't get from local storage: serverStorePath not set yet", key);
+                    return null;
+                }
                 return getServerStore().get(key);
-            }catch{
-                console.error("Can't get from local storage",error);
-                throw error;
+            }catch(innerError){
+                console.error("Can't get from local storage",key,innerError);
+                return null;
             }
         }
     }

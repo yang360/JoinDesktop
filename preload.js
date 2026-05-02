@@ -9,6 +9,7 @@ const {
 // the ipcRenderer without exposing the entire object
 contextBridge.exposeInMainWorld(
   "api", {
+      platform: process.platform,
       send: (channel, data) => {
           // whitelist channels
           let validChannels = ["openurl","authToken","notification","gcm","devices","setting","eventbus"];

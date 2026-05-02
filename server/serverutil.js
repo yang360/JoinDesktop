@@ -1,5 +1,4 @@
-import { Util } from '../v2/util.js';
-import { url } from 'inspector';
+const { Util } = require('../v2/util.js');
 
 const electron = require('electron');
 const { nativeImage} = electron;
@@ -24,7 +23,7 @@ const promiseLocalIp = new Promise((resolve,reject)=>{
 
     return ipv4s.slice(-1)[0].address;*/
 });
-export class UtilServer{
+class UtilServer{
     static async imageToFilePath(id,imageString,authToken){
         if(!imageString) return imageString;
 
@@ -88,8 +87,12 @@ export class UtilServer{
     }
         
     static async urlExists(url){
-        const urlExist = require("url-exist");
-        return await urlExist(url);
+        try{
+            const response = await fetch(url, { method: 'HEAD' });
+            return response.status !== 404;
+        }catch{
+            return false;
+        }
     }
     static openUrlOrFile(urlOrFile,needsFilePrefix){        
         const { shell } = require('electron')
@@ -126,3 +129,4 @@ export class UtilServer{
         // });
     }
 }
+exports.UtilServer = UtilServer;
